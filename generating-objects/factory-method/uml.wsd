@@ -1,0 +1,35 @@
+@startuml Factory Method
+
+WechatPlatform --|> Platform
+WeiboPlatform --|> Platform
+
+class WechatPlatform {
+    +sendMessage()
+}
+class WeiboPlatform {
+    +sendMessage()
+}
+abstract class Platform {
+    {abstract}+sendMessage()
+}
+
+abstract class Phone {
+    {abstract}+getPlatform(): Platform
+}
+class WechatPhone extends Phone {
+    +getPlatform()
+}
+class WeiboPhone extends Phone {
+    +getPlatform()
+}
+
+WechatPhone::getPlatform --> WechatPlatform : create
+WeiboPhone::getPlatform --> WeiboPlatform : create
+
+note as n1
+    1. separate creator and product
+    2. use subclass to create object
+    3. but may cause too many subclass
+    4. less advantage
+end note
+@enduml
