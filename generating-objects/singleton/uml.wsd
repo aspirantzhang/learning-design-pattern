@@ -1,0 +1,21 @@
+@startuml Singleton
+class Preferences {
+    -props: array
+    -{static} instance: Preferences
+    -__construct()
+    +{static} getInstance(): Preferences
+    +addProp(string key, string value)
+    +getProp(string key)
+}
+
+note left of Preferences::"getInstance()"
+    create a new Preferences instance
+end note
+
+note as n1
+    1. replace global variables
+    2. better encapsulation
+    3. perform associated operations within the class
+end note
+
+@enduml
