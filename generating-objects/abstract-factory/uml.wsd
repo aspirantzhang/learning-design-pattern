@@ -1,0 +1,53 @@
+@startuml Abstract Factory
+
+WechatNetworkPlatform --|> NetworkPlatform
+WeiboNetworkPlatform --|> NetworkPlatform
+WechatOfflinePlatform --|> OfflinePlatform
+WeiboOfflinePlatform --|> OfflinePlatform
+
+class WechatNetworkPlatform {
+    +sendMessage()
+}
+class WeiboNetworkPlatform {
+    +sendMessage()
+}
+abstract class NetworkPlatform {
+    {abstract}+sendMessage()
+}
+
+class WechatOfflinePlatform {
+    +sendMessage()
+}
+class WeiboOfflinePlatform {
+    +sendMessage()
+}
+abstract class OfflinePlatform {
+    {abstract}+sendMessage()
+}
+
+abstract class Phone {
+    {abstract}+getNetworkPlatform(): NetworkPlatform
+    {abstract}+getOfflinePlatform(): OfflinePlatform
+}
+class WechatPhone extends Phone {
+    +getNetworkPlatform(): NetworkPlatform
+    +getOfflinePlatform(): OfflinePlatform
+}
+class WeiboPhone extends Phone {
+    +getNetworkPlatform(): NetworkPlatform
+    +getOfflinePlatform(): OfflinePlatform
+}
+
+WechatPhone::getNetworkPlatform --> WechatNetworkPlatform : <<create>>
+WeiboPhone::getNetworkPlatform --> WeiboNetworkPlatform : <<create>>
+WechatPhone::getOfflinePlatform --> WechatOfflinePlatform : <<create>>
+WeiboPhone::getOfflinePlatform --> WeiboOfflinePlatform : <<create>>
+
+note as n1
+    1. evolution of Factory Method
+    2. separate creator and implement
+    3. extend new type without changing base class
+    4. may be more complicated, too many files and difficult to maintain
+end note
+
+@enduml
