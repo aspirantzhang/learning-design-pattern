@@ -1,0 +1,55 @@
+@startuml Prototype
+
+WechatNetworkPlatform --|> NetworkPlatform
+WeiboNetworkPlatform --|> NetworkPlatform
+WechatOfflinePlatform --|> OfflinePlatform
+WeiboOfflinePlatform --|> OfflinePlatform
+
+class WechatNetworkPlatform {
+    +sendMessage()
+}
+class WeiboNetworkPlatform {
+    +sendMessage()
+}
+abstract class NetworkPlatform {
+    {abstract}+sendMessage()
+}
+
+class WechatOfflinePlatform {
+    +sendMessage()
+}
+class WeiboOfflinePlatform {
+    +sendMessage()
+}
+abstract class OfflinePlatform {
+    {abstract}+sendMessage()
+}
+
+class PhoneFactory {
+    -networkPlatform: NetworkPlatform
+    -OfflinePlatform: OfflinePlatform
+
+    +getNetworkPlatform(): NetworkPlatform
+    +getOfflinePlatform(): OfflinePlatform
+}
+
+PhoneFactory::getNetworkPlatform --> WechatNetworkPlatform : <<create>>
+PhoneFactory::getNetworkPlatform --> WeiboNetworkPlatform : <<create>>
+PhoneFactory::getOfflinePlatform --> WechatOfflinePlatform : <<create>>
+PhoneFactory::getOfflinePlatform --> WeiboOfflinePlatform : <<create>>
+
+note left of PhoneFactory::"getNetworkPlatform()"
+    return clone $this->networkPlatform;
+end note
+
+note right of PhoneFactory::"getOfflinePlatform()"
+    return clone $this->offlinePlatform;
+end note
+
+note as n1
+    1. avoid too many subclass
+    2. avoid the cost of new a class
+    3. may be need deep clone (__clone) in php
+end note
+
+@enduml
