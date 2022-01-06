@@ -18,4 +18,9 @@ note as n1
     3. perform associated operations within the class
 end note
 
+note as n2
+    Singleton is considered bad by someone.
+    Use with caution and do not overuse.
+end note
+
 @enduml
