@@ -1,0 +1,25 @@
+@startuml Decorator
+abstract class Filter{
+    {abstract} +check(Request $request)
+}
+class Main extends Filter {
+    +check(Request $request)
+}
+abstract class FilterDecorator extends Filter {
+    #filter: Filter
+    +__construct(Filter $filter)
+}
+class BlackListFilter extends FilterDecorator {
+    +check(Request $request)
+}
+class RealNameFilter extends FilterDecorator {
+    +check(Request $request)
+}
+Filter --o FilterDecorator
+
+note as n1
+    1. flexible way to replace subclass
+    2. add objects dynamically at runtime
+    3. it is not a language feature...
+endnote 
+@enduml
