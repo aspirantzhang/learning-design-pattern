@@ -1,0 +1,38 @@
+@startuml Facade
+    class OrderFacade {
+        -order: Order
+        -account: Account
+        -security: Security
+        +__construct(Account $account, Security $security)
+        +addNew($address)
+    }
+
+    note left of OrderFacade::"addNew($address)"
+        public function addNew($address)
+        {
+            $this->order = (new Order())->save($address);
+            $this->account->check($this->order);
+            $this->security->check($this->order);
+            echo 'added successfully';
+        }
+    end note
+
+    package Subsystem {
+        class Order {
+            +save(string $address): Order
+        }
+        class Account {
+            +__construct(string $accountName)
+            +check(Order $order)
+        }
+        class Security {
+            +check(Order $order)
+        }
+    }
+
+    note as n1
+        1. a clear interface to client
+        2. reduce coupling between multiple complex subsystems
+        3. a layer
+    end note
+@enduml
