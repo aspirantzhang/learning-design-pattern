@@ -1,0 +1,48 @@
+@startuml Interpreter
+    class Expression {
+        {abstract} +interpret(context: InterpreterConText)
+        +getKey(): string
+    }
+    package TerminalExpression {
+        class LiteralExpression extends Expression {
+            +interpret(context: InterpreterConText)
+        }
+        class VariableExpression extends Expression {
+            +interpret(context: InterpreterConText)
+            +getKey(): string
+        }
+    }
+    class InterpreterContext {
+        +lookup(key: string): mixed
+        +replace(key: string, value: mixed)
+    }
+
+    Expression --> InterpreterContext : use
+
+    note right of NonTerminalExpression
+        Composite Pattern
+    end note
+
+    package NonTerminalExpression {
+        class OperatorExpression extends Expression{
+            +interpret(context: InterpreterConText)
+            #doInterpret(context: InterpreterContext)
+        }
+    }
+
+    class BooleanOrExpression extends OperatorExpression{
+        #doInterpret(context: InterpreterContext)
+    }
+    class BooleanAndExpression extends OperatorExpression{
+        #doInterpret(context: InterpreterContext)
+    }
+    class EqualsExpression extends OperatorExpression{
+        #doInterpret(context: InterpreterContext)
+    }
+
+    note as n1
+        a grammar for a simple language
+    end note
+    
+
+@enduml
