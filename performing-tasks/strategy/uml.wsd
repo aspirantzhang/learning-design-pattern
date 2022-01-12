@@ -1,0 +1,35 @@
+@startuml Strategy
+    abstract class Ad {
+        #priceStrategy: PriceStrategy
+        +__construct(PriceStrategy $priceStrategy)
+        +{abstract} function getPrice()
+    }
+
+    class IndoorAd extends Ad {
+        +function getPrice()
+    }
+    class OutdoorAd extends Ad {
+        +function getPrice()
+    }
+
+    abstract class PriceStrategy {
+        +{abstract} function calculate()
+    }
+    class ByMonthStrategy extends PriceStrategy {
+        +calculate()
+    }
+    class ByYearStrategy extends PriceStrategy {
+        +calculate()
+    }
+    class LifetimeStrategy extends PriceStrategy {
+        +calculate()
+    }
+
+    Ad::priceStrategy --> PriceStrategy: Algorithm
+
+    note as n1
+        1. select algorithm at runtime
+        2. instead of inheritance
+        3. good example for open/closed principle
+    end note
+@enduml
