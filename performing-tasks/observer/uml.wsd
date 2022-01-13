@@ -1,0 +1,31 @@
+@startuml Observer
+    class Login implements \SplSubject {
+        -observerStorage: \SplObjectStorage
+        +username: string
+        +email: string
+        +__construct()
+        +attach(observer: \SplObserver)
+        +detach(observer: \SplObserver)
+        +notify()
+        +doLogin(username: string, email: string)
+    }
+    abstract class LoginObserver implements \SplObserver {
+        -login: Login
+        +__construct(login: Login)
+        +update(subject: \SplSubject)
+        +{abstract}doUpdate(login: Login)
+    }
+    class LoginEmailNotify extends LoginObserver {
+        +doUpdate(login: Login)
+    }
+    class StandardLog extends LoginObserver {
+        +doUpdate(login: Login)
+    }
+
+    note as n1
+        1. decouple objects
+        2. subject holds strong references to the observers,
+            may cause memory leak.
+            use weak references.
+    end note
+@enduml
