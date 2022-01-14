@@ -1,0 +1,62 @@
+@startuml Visitor
+
+package Component {
+    abstract class Ad {
+        {abstract} +getClientNumber()
+        {abstract} +accept(visitor: AdVisitor)
+    }
+}
+package Visitor {
+    abstract class AdVisitor {
+        {abstract} visitWechatAd(wechatAd: WechatAd);
+        {abstract} visitWeiboAd(weiboAd: WeiboAd);
+        {abstract} visitWechatAdOther(wechatAdOther: WechatAdOther);
+    }
+    
+    class OffSeasonAdVisitor extends AdVisitor {
+        -offSeasonClientNumber
+        +visitWechatAd(wechatAd: WechatAd)
+        +visitWeiboAd(weiboAd: WeiboAd)
+        +visitWechatAdOther(wechatAdOther: WechatAdOther)
+        +getOffSeasonClientNumber()
+    }
+}
+
+Ad::accept ..> AdVisitor
+
+package Composite {
+    class Promotion extends Ad {
+        -ads: array
+        +addAd(Ad $ad)
+        +getClientNumber()
+    }
+}
+
+package Leaf {
+    class WeiboAd extends Ad {
+        +getClientNumber()
+        +accept(visitor: AdVisitor)
+    }
+    class WechatAd extends Ad {
+        +getClientNumber()
+        +accept(visitor: AdVisitor)
+    }
+    class WechatAdOther extends WechatAd {
+        +getClientNumber()
+        +accept(visitor: AdVisitor)
+    }
+}
+
+
+
+note as n1
+    Once you give him a key, he can come unlimited times.
+    key  => accept() in leaf
+    come => visit() in visitor
+
+    1. separating an algorithm from an object structure
+    2. follow the Open/Closed Principle
+    3. add new operation without modifying existing structure
+    4. not only fit for Composite, but also other objects
+endnote
+@enduml
