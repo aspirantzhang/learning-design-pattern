@@ -1,0 +1,38 @@
+@startuml Command - basic
+    package Invoker {
+        class Company {
+            -command: Command
+            +getCommand(command: Command)
+            +run()
+        }
+    }
+    package Command {
+        interface Command {
+            +execute()
+        }
+        class SelfMoveCommand implements Command {
+            -mover: Mover
+            +__construct(mover: Mover)
+            +execute()
+        }
+        class DriverMoveCommand implements Command {
+            -mover: Mover
+            +__construct(mover: Mover)
+            +execute()
+        }
+    }
+    package Receiver {
+        class Mover {
+            +pack()
+            +carry()
+            +drive()
+            +unpack()
+        }
+    }
+
+    note as n1
+        1. decouple Invoker and Receiver
+        2. SCP+OCP
+        3. commonly used
+    end note
+@enduml
