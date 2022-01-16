@@ -1,0 +1,42 @@
+@startuml Command - extend
+    package Invoker {
+        class Company {
+            -commandContext: CommandContext
+            +__construct()
+            +getContext(): CommandContext
+            +run()
+        }
+    }
+    Company::getContext --> Context
+    package Context {
+        class CommandContext {
+            -command: string
+            +setCommand(command: string)
+            +getCommand()
+        }
+    }
+    package Command {
+        class CommandFactory {
+            +{static}getCommand(command: string): ?Command
+        }
+        CommandFactory::getCommand --> Command
+        interface Command {
+            +execute()
+        }
+        class SelfMoveCommand implements Command {
+            -mover: Mover
+            +__construct(mover: Mover)
+            +execute()
+        }
+        class DriverMoveCommand implements Command {
+            -mover: Mover
+            +__construct(mover: Mover)
+            +execute()
+        }
+    }
+
+    note as n1
+        1. no receiver
+        2. CommandFactory = Client = Front Controller
+    end note
+@enduml
