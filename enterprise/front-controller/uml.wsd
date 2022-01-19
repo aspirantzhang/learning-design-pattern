@@ -1,0 +1,20 @@
+@startuml FrontController
+
+activate FrontController
+FrontController -> ApplicationHelper ++ : init()
+note left
+    From WikiPedia:
+    1. a controller that handles all requests for a website
+    2. Based on the specific request, it would then instantiate
+        further objects and call methods to handle the particular tasks required.
+end note
+deactivate ApplicationHelper
+FrontController -> CommandResolver ++ : getCommand()
+CommandResolver --> FrontController --
+FrontController -> Command ++: execute()
+deactivate Command
+deactivate FrontController
+
+
+
+@enduml
