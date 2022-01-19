@@ -1,0 +1,71 @@
+@startuml ApplicationController
+
+activate Controller
+Controller -> ApplicationController ++ : getCommand()
+note left
+    From Martin Fowler:
+    1. A centralized point for handling screen navigation
+        and the flow of an application.
+    2. Input controllers then ask the Application Controller
+        for the appropriate commands for execution against 
+        a model and the correct view to use depending on 
+        the application context.
+end note
+ApplicationController --> Controller --
+Controller -> Command ++ : execute()
+deactivate Command
+Controller -> ApplicationController ++ : getView()
+ApplicationController --> Controller --
+
+Controller -> ViewComponent ++: render()
+deactivate ViewComponent
+deactivate Controller
+
+note left Controller
+class Controller
+{
+    ...
+    private function handleRequest(): void
+    {
+        $request = $this->reg->getRequest();
+        $controller = new AppController();
+        $cmd = $controller->getCommand($request);
+        $cmd->execute($request);
+        $view = $controller->getView($request);
+        $view->render($request);
+    }
+    ...
+}
+end note
+
+note left ApplicationController
+class AppController
+{
+    ...
+    public function getCommand(Request $request): Command
+    {
+        try {
+            $descriptor = $this->getDescriptor($request);
+            $cmd = $descriptor->getCommand();
+        } catch (AppException $e) {
+            $request->addFeedback($e->getMessage());
+            return new self::$defaultcmd();
+        }
+        return $cmd;
+    }
+    public function getView(Request $request): ViewComponent {..}
+    private function getDescriptor(Request $request): ComponentDescriptor
+    {
+        $reg = Registry::instance();
+        $commands = $reg->getCommands();
+        $path = $request->getPath();
+        $descriptor = $commands->get($path);
+        ...
+        return $descriptor;
+    }
+}
+end note
+
+
+
+@enduml
