@@ -29,6 +29,7 @@ package Composite {
         -ads: array
         +addAd(Ad $ad)
         +getClientNumber()
+        +accept(visitor: AdVisitor)
     }
 }
 
