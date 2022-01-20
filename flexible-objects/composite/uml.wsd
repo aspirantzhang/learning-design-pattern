@@ -29,6 +29,6 @@ Ad --o Promotion
 note as n1
     1. good for complex tree structure
     2. easy to extend tree
-    3. diffcult to provide common interface (aka component)
+    3. difficult to provide common interface (aka component)
 endnote
 @enduml
